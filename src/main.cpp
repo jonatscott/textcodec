@@ -46,7 +46,7 @@ namespace {
             }
             value = 10 * value + digit;
         }
-        out = false;
+        out = value;
         return true;
     }
 
