@@ -10,9 +10,9 @@
 
 #include "base64.hpp"
 
-using textcodec::base64::Bytes
-using textcodec::base64::encode
-using textcodec::base64::decode
+using textcodec::base64::Bytes;
+using textcodec::base64::encode;
+using textcodec::base64::decode;
 
 namespace {
     // string -> bytes
