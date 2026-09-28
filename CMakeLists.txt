@@ -44,6 +44,49 @@ target_link_libraries(textcodec PRIVATE textcodec_core)
 target_compile_options(textcodec PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic>)
 
+# -- tests
+# allow disable tests - default is ON
+option(TEXTCODEC_BUILD_TESTS "Build test suite" ON)
+
+if (TEXTCODEC_BUILD_TESTS)
+        include(CTest)
+        enable_testing()
+
+        # pull in doctest at config time
+        include(FetchContent)
+        FetchContent_Declare(doctest
+                GIT_REPOSITORY https://github.com/doctest/doctest.git
+                GIT_TAG v2.4.11)
+
+        set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+        FetchContent_MakeAvailable(doctest)
+        unset(CMAKE_POLICY_VERSION_MINIMUM)
+
+        # unit test link plus doctest
+        add_executable(textcodec_tests tests/test_base64.cpp)
+        target_link_libraries(textcodec_tests PRIVATE textcodec_core doctest::doctest)
+
+        # same warnings as rest of project
+        target_compile_options(textcodec_tests PRIVATE
+                $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic>)
+
+        # register each test case in bin as its own CTest test
+        include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
+        doctest_discover_tests(textcodec_tests)
+
+        # CLI black-box tests 
+        find_package(Python3 COMPONENTS Interpreter)
+        if(Python3_Interpreter_FOUND)
+                add_test(NAME cli_tests
+                        COMMAND ${Python3_Executable}
+                        ${CMAKE_CURRENT_SOURCE_DIR}/tests/cli_test.py
+                        $<TARGET_FILE:textcodec>)
+        else()
+                message(WARNING
+                        "Python3 interpreter not found - skipping CLI tests")
+        endif()
+endif()
+
 # -- install (so sudo make install puts it on PATH)
 
 include(GNUInstallDirs)

@@ -1,0 +1,51 @@
+name: CI
+
+# run on pushes to main and on pull requests
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # -- Job A: native x86-64 build + test
+  build-and-test:
+    name: Build & test (x86-64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+      
+      - name: Build
+        run: cmake --build build
+      
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  # -- Job B: ARM / Raspberry Pi validation
+  # Pi is ARM, so x86 build alone misses ARM-specific issues. This job runs the real suite inside an emulated ARM container
+  # this targets 64-bit Raspberry Pi OS, 
+  # for 32-bit switch --platform to linux/arm/v7 and image to arm32v7/debian:bookwork
+  arm-build-test:
+    name: Build & test (ARM64 / Raspberry Pi)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Build & test under emulated ARM64
+        run: |
+          docker run --rm --platform linux/arm64 \
+          -v "$PWD":/src -w /src arm64v8/debian:bookworm \
+          bash -c '
+            set -e
+            apt-get update
+            apt-get install -y --no-install-recommends \
+              cmake g++ git ca-certificates python3
+            cmake -B build -DC_BUILD_TYPE=Release
+            cmake --build build
+            ctest --test-dir build --output-on-failure
+          '
