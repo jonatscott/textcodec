@@ -44,7 +44,7 @@ jobs:
             set -e
             apt-get update
             apt-get install -y --no-install-recommends \
-              cmake g++ git ca-certificates python3
+              cmake make g++ git ca-certificates python3
             cmake -B build -DC_BUILD_TYPE=Release
             cmake --build build
             ctest --test-dir build --output-on-failure

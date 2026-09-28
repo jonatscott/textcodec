@@ -44,7 +44,7 @@ TEST_CASE("encode: output never contains line breaks") {
 }
 
 TEST_CASE("decode: RFC 4648 test vectors") {
-    struct CASE {
+    struct Case {
         const char* in;
         const char* out;
     };
@@ -69,7 +69,7 @@ TEST_CASE("round-trip: all 256 byte values") {
     Bytes all;
     all.reserve(256);
     for (int b = 0; b < 256; ++b) {
-        all.push_back(static_cast<std::uint8_t>(i));
+        all.push_back(static_cast<std::uint8_t>(b));
     }
     const auto r = decode(encode(all));
     REQUIRE(r.ok);
@@ -135,7 +135,7 @@ TEST_CASE("decode: full quantum must not have padding") {
     CHECK_FALSE(decode("Zm9v=").ok);
 }
 
-TEST_ACSE("decode: reject non-zero padding bits") {
+TEST_CASE("decode: reject non-zero padding bits") {
     CHECK_FALSE(decode("Zh==").ok);
     CHECK(decode("Zg==").ok);
 }
