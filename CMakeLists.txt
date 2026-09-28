@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(textcodec
-        VERSION 1.0.1
+        VERSION 1.0.2
         DESCRIPTION "Headless Base64 encode/decode tool driver on SSH"
         LANGUAGES CXX)
 

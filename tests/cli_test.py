@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 End-to-end tests for textcodec CLI
 Invoked by CTest
