@@ -49,7 +49,7 @@ def main():
     bin = sys.argv[1]
 
     #encode: trailing newline
-    rc, out = run(bin, ["encode"], b"hello word")
+    rc, out = run(bin, ["encode"], b"hello world")
     check("encode adds trailing newline", rc == OK and out == b"aGVsbG8gd29ybGQ=\n",
           f"(rc={rc}, out={out!r})")
 
@@ -74,7 +74,7 @@ def main():
     rc1, encoded_n1 = run(bin, ["encode"], b"foobar")
     rc2, decoded_n1 = run(bin, ["decode"], encoded_n1)
     check("decode accepts encode's newline-terminated output",
-          rc1 == OK and rc2 == OK and decoded == b"foobar",
+          rc1 == OK and rc2 == OK and decoded_n1 == b"foobar",
           f"(rc1={rc1}, rc2={rc2}, out={decoded_n1!r})")
 
     #--help exits 0

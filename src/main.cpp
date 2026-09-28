@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
             return textcodec::to_exit_code(Status::Ok);
         } else if (arg == "-n" || arg == "--no-newline") {
             opts.append_newline = false;
-        } else if (arg == "--max_bytes") {
+        } else if (arg == "--max-bytes") {
             if (i + 1 >= argc) {
                 std::cerr << kProgram << ": --max_bytes requires a value\n";
                 return textcodec::to_exit_code(Status::UsageError);
