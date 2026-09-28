@@ -130,11 +130,11 @@ int main(int argc, char** argv) {
             opts.append_newline = false;
         } else if (arg == "--max-bytes") {
             if (i + 1 >= argc) {
-                std::cerr << kProgram << ": --max_bytes requires a value\n";
+                std::cerr << kProgram << ": --max-bytes requires a value\n";
                 return textcodec::to_exit_code(Status::UsageError);
             }
             if (!parse_size(argv[++i], opts.max_bytes) || opts.max_bytes == 0) {
-                std::cerr << kProgram << ": invalid --max_bytes value\n";
+                std::cerr << kProgram << ": invalid --max-bytes value\n";
                 return textcodec::to_exit_code(Status::UsageError);
             }
         } else {
