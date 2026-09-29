@@ -61,7 +61,7 @@ namespace {
         Status s = textcodec::io::read_stdin(input, opts.max_bytes);
         if (s != Status::Ok) {
             std::cerr << kProgram << ": " << textcodec::describe(s) << "\n";
-            return textcodec::to_exit_code(Status::Ok);
+            return textcodec::to_exit_code(s);
         }
 
         std::string encoded = textcodec::base64::encode(input);
@@ -81,7 +81,7 @@ namespace {
         Status s = textcodec::io::read_stdin(input, opts.max_bytes);
         if (s != Status::Ok) {
             std::cerr << kProgram << ": " << textcodec::describe(s) << "\n";
-            return textcodec::to_exit_code(Status::Ok);
+            return textcodec::to_exit_code(s);
         }
         
         std::string_view view(reinterpret_cast<const char*>(input.data()), input.size());

@@ -21,7 +21,7 @@ namespace textcodec {
         switch (s) {
             case Status::Ok:           return "ok";
             case Status::UsageError:   return "usage error";
-            case Status::InputToLarge: return "input eceeded max size";
+            case Status::InputToLarge: return "input exceeded max size";
             case Status::IoError:      return "input/output error";
             case Status::DecodeError:  return "invalid base64 input";
         }
